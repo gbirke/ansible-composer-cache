@@ -1,0 +1,14 @@
+---
+# Playbook for testing the functionality
+- hosts: localhost
+  vars:
+    test_dir: /tmp/composertest
+  tasks:
+  - name: Prepare cache dir
+    file: state=directory path={{test_dir}}/cache
+  - name: Prepare src dir
+    file: state=directory path={{test_dir}}/src
+  - name: Copy composer lock file
+    copy: src=files/composer.lock dest={{test_dir}}/src
+  - name: Test composer-cache
+    action: composer-cache cache_dir={{test_dir}}/cache lockfile={{test_dir}}/src/composer.lock vendor_dir={{test_dir}}/src/vendor
